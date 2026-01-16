@@ -60,14 +60,14 @@ Ein intuitives Split-Screen-Interface:
 * **Backend:** [Symfony 7](https://symfony.com) (PHP 8.2+)
 * **Frontend:** Webpack Encore, Stimulus, Bootstrap 5
 * **Canvas-Engine:** [Fabric.js](http://fabricjs.com/) (v6)
-* **Datenbank:** MariaDB / PostgreSQL
+* **Datenbank:** MySQL 8.0 (via Docker)
 
 ---
 
 ## 📝 Roadmap
 
 - [ ] **Phase 1: Core & Datenstruktur**
-    - [ ] Symfony Projekt & User-Auth aufsetzen.
+    - [x] Projekt-Setup (Symfony, Docker, Make)
     - [ ] Entity `Project` erstellen (Kunde, Datum, Location).
     - [ ] Entity `Design` erstellen (Layout-Daten).
 
@@ -85,12 +85,47 @@ Ein intuitives Split-Screen-Interface:
 
 ---
 
-## 🚀 Installation (Dev)
+## 🚀 Installation & Entwicklung
 
-1.  `git clone ...`
-2.  `composer install`
-3.  `npm install && npm run build`
-4.  `symfony server:start`
+Dank **Docker** und **Make** ist das Aufsetzen der Umgebung extrem einfach.
+
+### Voraussetzungen
+* Docker Desktop (gestartet)
+* PHP 8.2+ & Composer
+* Node.js & NPM
+
+### Setup (Nur beim ersten Mal)
+
+1.  **Repository klonen**
+    ```bash
+    git clone [https://github.com/dein-user/fotobooth-turbo.git](https://github.com/dein-user/fotobooth-turbo.git)
+    cd fotobooth-turbo
+    ```
+
+2.  **Initialisieren**
+    Dieser Befehl startet Docker, installiert alle Pakete und richtet die Datenbank ein:
+    ```bash
+    make init
+    ```
+
+### Täglicher Workflow
+
+* **Starten:** Startet Webserver, Datenbank und Asset-Watcher.
+    ```bash
+    make start
+    ```
+  *Die App läuft unter: `https://127.0.0.1:8000`*
+
+* **Stoppen:** Beendet Server und Container.
+    ```bash
+    make stop
+    ```
+
+* **Datenbank-Update:** Nach Änderungen an Entities (neue Tabellen).
+    ```bash
+    make migration  # Erstellt die Migrations-Datei
+    make db         # Führt die Migration aus
+    ```
 
 ---
 
