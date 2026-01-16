@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  database:
+    image: mysql:8.0
+    environment:
+      # Hier legen wir Benutzer und Passwort fest
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fotobooth_turbo
+    ports:
+      # Wir leiten den Docker-Port 3306 auf deinen Mac weiter
+      - "3306:3306"
+    volumes:
+      # Damit die Daten gespeichert bleiben
+      - database_data:/var/lib/mysql
+
+volumes:
+  database_data:
