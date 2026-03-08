@@ -1,18 +1,20 @@
-version: '3'
-
+# yaml-language-server: $schema=vendor/symfony/dependency-injection/Loader/schema/services.schema.json
 services:
   database:
     image: mysql:8.0
     environment:
-      # Hier legen wir Benutzer und Passwort fest
+      # Name der Datenbank
+      MYSQL_DATABASE: fotoboothturbo
+      # Passwort für den Benutzer 'root'
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: fotobooth_turbo
     ports:
-      # Wir leiten den Docker-Port 3306 auf deinen Mac weiter
       - "3306:3306"
     volumes:
-      # Damit die Daten gespeichert bleiben
       - database_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 5
 
 volumes:
   database_data:
