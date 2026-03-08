@@ -1,0 +1,96 @@
+{% extends 'admin/_layout.html.twig' %}
+
+{% block page_title %}{{ project.title }}{% endblock %}
+{% block header %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl">
+    {# Status #}
+    <div class="mb-6">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+            {{ project.status.badgeColor == 'gray' ? 'bg-gray-100 text-gray-700' : '' }}
+            {{ project.status.badgeColor == 'yellow' ? 'bg-yellow-100 text-yellow-700' : '' }}
+            {{ project.status.badgeColor == 'orange' ? 'bg-orange-100 text-orange-700' : '' }}
+            {{ project.status.badgeColor == 'green' ? 'bg-green-100 text-green-700' : '' }}
+            {{ project.status.badgeColor == 'blue' ? 'bg-blue-100 text-blue-700' : '' }}
+            {{ project.status.badgeColor == 'slate' ? 'bg-slate-100 text-slate-700' : '' }}
+        ">
+            {{ project.status.label }}
+        </span>
+    </div>
+
+    {# Kunde #}
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Kunde</h3>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <dt class="text-sm text-gray-500">Name</dt>
+                <dd class="text-sm font-medium text-gray-900">{{ project.customer.name }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm text-gray-500">E-Mail</dt>
+                <dd class="text-sm font-medium text-gray-900">{{ project.customer.email }}</dd>
+            </div>
+            {% if project.customer.company %}
+            <div>
+                <dt class="text-sm text-gray-500">Firma</dt>
+                <dd class="text-sm font-medium text-gray-900">{{ project.customer.company }}</dd>
+            </div>
+            {% endif %}
+            {% if project.customer.phone %}
+            <div>
+                <dt class="text-sm text-gray-500">Telefon</dt>
+                <dd class="text-sm font-medium text-gray-900">{{ project.customer.phone }}</dd>
+            </div>
+            {% endif %}
+        </dl>
+    </div>
+
+    {# Event #}
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Event</h3>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <dt class="text-sm text-gray-500">Datum</dt>
+                <dd class="text-sm font-medium text-gray-900">{{ project.event.eventDate|date('d.m.Y') }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm text-gray-500">Location</dt>
+                <dd class="text-sm font-medium text-gray-900">{{ project.event.location }}</dd>
+            </div>
+            {% if project.event.notes %}
+            <div class="md:col-span-2">
+                <dt class="text-sm text-gray-500">Notizen</dt>
+                <dd class="text-sm font-medium text-gray-900 whitespace-pre-line">{{ project.event.notes }}</dd>
+            </div>
+            {% endif %}
+        </dl>
+    </div>
+
+    {# Tarif & Link #}
+    {% if project.customerLink %}
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Kunden-Link</h3>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <dt class="text-sm text-gray-500">Tarif</dt>
+                <dd class="text-sm font-medium text-gray-900">{{ project.customerLink.tarifTier.label }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm text-gray-500">Token</dt>
+                <dd class="text-sm font-mono text-gray-900 break-all">{{ project.customerLink.token }}</dd>
+            </div>
+        </dl>
+    </div>
+    {% endif %}
+
+    {# Meta #}
+    <div class="text-sm text-gray-500">
+        Erstellt am {{ project.createdAt|date('d.m.Y H:i') }} Uhr
+    </div>
+
+    <div class="mt-6">
+        <a href="{{ path('admin_dashboard') }}" class="text-sm text-blue-600 hover:text-blue-800 transition">&larr; Zurück zur Übersicht</a>
+    </div>
+</div>
+{% endblock %}

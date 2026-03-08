@@ -1,0 +1,40 @@
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6" data-controller="filter">
+    <form method="get" action="{{ path('admin_dashboard') }}" data-filter-target="form" class="flex flex-wrap items-end gap-4">
+        <div class="flex-1 min-w-[200px]">
+            <label for="filter-search" class="block text-sm font-medium text-gray-700 mb-1">Suche</label>
+            <input type="text" id="filter-search" name="q" value="{{ currentFilters.q }}"
+                placeholder="Kunde, Firma, Titel..."
+                data-action="input->filter#search"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+        </div>
+
+        <div class="w-48">
+            <label for="filter-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select id="filter-status" name="status" data-action="change->filter#submit"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white">
+                <option value="">Alle</option>
+                {% for status in statuses %}
+                    <option value="{{ status.value }}" {{ currentFilters.status == status.value ? 'selected' : '' }}>{{ status.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="w-40">
+            <label for="filter-date-from" class="block text-sm font-medium text-gray-700 mb-1">Datum von</label>
+            <input type="date" id="filter-date-from" name="date_from" value="{{ currentFilters.date_from }}"
+                data-action="change->filter#submit"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+        </div>
+
+        <div class="w-40">
+            <label for="filter-date-to" class="block text-sm font-medium text-gray-700 mb-1">Datum bis</label>
+            <input type="date" id="filter-date-to" name="date_to" value="{{ currentFilters.date_to }}"
+                data-action="change->filter#submit"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+        </div>
+
+        <div>
+            <button type="submit" class="px-4 py-2 bg-gray-100 text-gray-700 text-sm rounded-md hover:bg-gray-200 transition">Filtern</button>
+        </div>
+    </form>
+</div>

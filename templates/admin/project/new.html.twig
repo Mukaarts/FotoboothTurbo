@@ -1,0 +1,53 @@
+{% extends 'admin/_layout.html.twig' %}
+
+{% block page_title %}Neues Projekt{% endblock %}
+{% block header %}Neues Projekt{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl">
+    {{ form_start(form, {attr: {class: 'space-y-6'}}) }}
+
+        {# Projekt-Titel #}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Projekt</h3>
+            {{ form_row(form.title) }}
+        </div>
+
+        {# Kunde #}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Kunde</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>{{ form_row(form.customer.name) }}</div>
+                <div>{{ form_row(form.customer.email) }}</div>
+                <div>{{ form_row(form.customer.company) }}</div>
+                <div>{{ form_row(form.customer.phone) }}</div>
+            </div>
+        </div>
+
+        {# Event #}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Event</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>{{ form_row(form.event.eventDate) }}</div>
+                <div>{{ form_row(form.event.location) }}</div>
+            </div>
+            {{ form_row(form.event.notes) }}
+        </div>
+
+        {# Tarif #}
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Tarif</h3>
+            {{ form_row(form.tarifTier) }}
+        </div>
+
+        {# Actions #}
+        <div class="flex items-center gap-4">
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition">
+                Projekt erstellen
+            </button>
+            <a href="{{ path('admin_dashboard') }}" class="text-sm text-gray-600 hover:text-gray-800 transition">Abbrechen</a>
+        </div>
+
+    {{ form_end(form) }}
+</div>
+{% endblock %}
