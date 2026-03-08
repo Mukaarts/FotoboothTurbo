@@ -1,4 +1,4 @@
-.PHONY: help init start stop restart db migration cc assets
+.PHONY: help init start stop restart db migration fixtures db-reset cc assets fix
 
 # Standard-Hilfe: Zeigt alle Befehle an, wenn du nur "make" tippst
 help: ## Zeigt diese Hilfe an
@@ -6,9 +6,11 @@ help: ## Zeigt diese Hilfe an
 
 # --- 🚀 Projekt Start & Setup ---
 
-init: ## Projekt initialisieren (Docker starten, Dependencies, DB erstellen)
+init: ## Projekt initialisieren (Docker, Dependencies, DB & Fixtures)
 	@echo "🐳 Starte Docker Container..."
 	docker compose up -d
+	@echo "⏳ Warte 10 Sekunden auf Datenbank-Initialisierung..."
+	@sleep 10
 	@echo "📦 Installiere PHP Dependencies..."
 	composer install
 	@echo "📦 Installiere JS Dependencies..."
@@ -16,6 +18,8 @@ init: ## Projekt initialisieren (Docker starten, Dependencies, DB erstellen)
 	@echo "🗄  Richte Datenbank ein..."
 	php bin/console doctrine:database:create --if-not-exists
 	php bin/console doctrine:migrations:migrate --no-interaction
+	@echo "🌱 Lade Testdaten (Fixtures)..."
+	php bin/console doctrine:fixtures:load --no-interaction
 	@echo "✅ Setup fertig! Starte den Server mit 'make start'"
 
 start: ## Startet Docker, Symfony Server und Asset-Watcher
@@ -37,10 +41,14 @@ db: ## Führt Datenbank-Migrationen aus
 migration: ## Erstellt eine neue Migration basierend auf Änderungen an Entities
 	php bin/console make:migration
 
-db-reset: ## ⚠️ ACHTUNG: Löscht die DB und erstellt sie komplett neu (Daten weg!)
-	php bin/console doctrine:database:drop --force --if-exists
+fixtures: ## Lädt die Testdaten neu (Löscht alte Daten!)
+	php bin/console doctrine:fixtures:load --no-interaction
+
+db-reset: ## ⚠️ ACHTUNG: Löscht DB, migriert neu & lädt Fixtures (Alles frisch!)
+	-php bin/console doctrine:database:drop --force --if-exists
 	php bin/console doctrine:database:create
 	php bin/console doctrine:migrations:migrate --no-interaction
+	php bin/console doctrine:fixtures:load --no-interaction
 
 # --- 🧹 Tools & Assets ---
 
@@ -49,3 +57,6 @@ cc: ## Cache leeren (Wichtig nach Config-Änderungen)
 
 assets: ## Baut die Assets für Production (Minifiziert)
 	npm run build
+
+fix: ## Repariert Code-Styles (CS-Fixer)
+	vendor/bin/php-cs-fixer fix
